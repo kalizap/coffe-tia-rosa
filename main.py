@@ -129,6 +129,7 @@ def ver_clientes():
         print(f'{cliente.nome}')
         print(f'    CPF: {cliente.cpf}\n')
         print('*~~' * 20)
+    return
 #ver_clientes()
 
 # Função de cadastro de clientes
@@ -154,7 +155,7 @@ def cadastro_de_clientes():
         # se passar pela verificação uma variavel cliente é criada
         # e adicionada na lista de clientes
 
-        cpf = input('CPF (somente números): \n').strip()
+        cpf = input('CPF (somente números com 11 digitos): \n').strip()
         jatem_cpf = False
         for c in clientes:
             if c.cpf == cpf:
@@ -169,28 +170,8 @@ def cadastro_de_clientes():
             novo_cliente = Cliente(nome, cpf)
             clientes.append(novo_cliente)
             sucesso(f'\nO cliente "{nome}" com o CPF "{cpf}" foi registrado com sucesso!\n')
-            break
+            return
 #cadastro_de_clientes()
-
-# Função de menu da parte de clientes
-def menu_clientes():
-    while True:
-        titulo('Menu Clientes')
-        print('1 - Clientes Cadastrados')
-        print('2 - Cadastrar Novo Cliente')
-        print('9 - Voltar ao menu principal')
-        opcao = input('Escolha uma opção: ').strip()
-
-        if opcao == '1':
-            ver_clientes()
-        elif opcao == '2':
-            cadastro_de_clientes()
-        elif opcao == '9':
-            menu_principal()
-            break
-        else:
-            erro('Opção inválida. Tente novamente.\n')
-#menu_clientes()
 
 #  =-=-=-=-=-=-=-=-=-=-=-=  FUNÇÕES PRODUTOS  =-=-=-=-=-=-=-=-=-=-=-=
 # Função de ver o cardápio
@@ -205,6 +186,7 @@ def ver_cardapio():
 
 # Função de cadastro de produtos
 def cadastro_produto():
+    # Verifica se o input não está vazio
     titulo('Cadastro de Produto')
     while True:
         nome = input('Adicione o nome do produto:\n').strip().title()
@@ -213,6 +195,8 @@ def cadastro_produto():
         else:
             break
 
+    # Verifica se o iput de ingredientes não está vazio
+    # Se não estiver, transforma em uma lista de ingredientes
     while True:
         ingred_input = input('\nIngredientes separados por vírgula:\n').strip().title()
         if ingred_input == "":
@@ -223,6 +207,8 @@ def cadastro_produto():
             ingredientes = [item.strip().title() for item in ingred_input.split(',')]
             break
 
+    # Verifica se o input de preço é um número
+    # Se não for, pede novamente e salva o preço como float
     while True:
         preco_input = input('\nAdicione o preço separado com ponto:\n').strip()
         if preco_input.replace('.', '', 1).isdigit():
@@ -256,7 +242,6 @@ def menu_produtos():
         else:
             erro('Opção inválida. Tente novamente.\n')
 #menu_produtos()
-
 #  =-=-=-=-=-=-=-=-=-=-=-=  FUNÇÕES PEDIDOS  =-=-=-=-=-=-=-=-=-=-=-=
 # Função nota fiscal
 def NF(cliente, produtos, id_nf):
@@ -272,13 +257,12 @@ def NF(cliente, produtos, id_nf):
     print('-' * 30)
     print('Obrigado pela preferência!')
     print('-' * 30)
-#fazer_pedido()
-
+#
 # Função para fazer um pedido
 def fazer_pedido():
     titulo('Fazer Pedido')
     while True:
-        #valida se o nome do cliente existe nos dados já criados
+        # Valida se o nome do cliente existe nos dados já criados
         cliente_input = input('Digite o nome do cliente:\n').strip()
         if cliente_input == "":
             erro('O nome do cliente não pode estar vazio!\n')
@@ -308,12 +292,13 @@ def fazer_pedido():
             break
     
     while True:
-        
+        # retorna o cardápio de uma forma mais enxuta e com os ids já informados
         titulo("Cardápio")
         for i, p in enumerate(produtos, start=1):
             print(f'{i} - {p.nome_pro} - R$ {p.preco:.2f}')
             print(f'    Ingredientes: {", ".join(p.ingredientes)}\n')
 
+# Pergunta o id do produto deseja e verifica se ele realmente existe
         produtos_input = input('Digite os id dos produtos separados por vírgula: ').strip()
         if produtos_input == "":
             erro('Digite um número informado\n')
@@ -354,7 +339,7 @@ def fazer_pedido():
             print('-' * 30)
             break
 
-    # Confirmar pedido
+    # Confirmação do pedido
     while True:
         confirmar = input('Deseja prosseguir [S/N]? ').strip().lower()
         if confirmar == 's':
@@ -378,8 +363,6 @@ def fazer_pedido():
         else:
             erro('Opção inválida. Digite S ou N.\n')
 #fazer_pedido()
-
-
 
 # Executa o sistema
 if __name__ == '__main__':
